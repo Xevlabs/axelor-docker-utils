@@ -1,0 +1,47 @@
+services:
+  server:
+    image: gcr.io/<GCP_PROJECT_ID>/<REPO_NAME>:latest
+    container_name: axelor
+    volumes:
+      - ./data/calista/props:/opt/tomcat/props
+      - ./data/calista/axelor:/opt/tomcat/axelor
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+    healthcheck:
+      interval: 20s
+      test: ["CMD", "curl", "-f", "http://localhost:8080/"]
+      timeout: 5s
+      retries: 20
+      start_period: 60s
+    restart: always
+    mem_limit: 12g
+    cpus: 8
+  db:
+    container_name: postgres
+    image: postgres
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      PGDATA: /data/postgres
+      POSTGRES_DB: axelor-open-suite
+    volumes:
+      - db:/data/postgres
+    ports:
+      - "5432:5432"
+  backup:
+    image: antoinexev/db-auto-backup:v0.1
+    restart: unless-stopped
+    environment:
+      - COMPRESS=true
+      - TIMESTAMP=true
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./data/calista/backups:/var/backups
+    depends_on:
+      - db
+volumes:
+  db:
+  props:
+  axelor:
