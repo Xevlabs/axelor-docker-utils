@@ -38,7 +38,7 @@ services:
       - TIMESTAMP=true
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
-      - ./data/calista/backups:/var/backups
+      - ./data/backups:/var/backups
     depends_on:
       - db
 volumes:
