@@ -3,8 +3,8 @@ services:
     image: gcr.io/<GCP_PROJECT_ID>/<REPO_NAME>:latest
     container_name: axelor
     volumes:
-      - ./data/calista/props:/opt/tomcat/props
-      - ./data/calista/axelor:/opt/tomcat/axelor
+      - ./data/props:/opt/tomcat/props
+      - ./data/axelor:/opt/tomcat/axelor
     ports:
       - "8080:8080"
     depends_on:
