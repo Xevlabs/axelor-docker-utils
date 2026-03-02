@@ -31,7 +31,7 @@ services:
     ports:
       - "5432:5432"
   backup:
-    image: antoinexev/db-auto-backup:v0.1
+    image: antoinexev/db-auto-backup:v0.2
     restart: unless-stopped
     environment:
       - COMPRESS=true
